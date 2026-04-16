@@ -16,14 +16,7 @@
   <a href="https://readme-i18n.com/zh/we-promise/sure">中文</a>
 </p>
 
-# Sure: The personal finance app for everyone
-
-<b>Get
-involved: [Discord](https://discord.gg/36ZGBsxYEK) • [Website](https://sure.am) • [Issues](https://github.com/we-promise/sure/issues)</b>
-
-> [!IMPORTANT]
-> This repository is a community fork of the now-abandoned Maybe Finance project. <br />
-> Learn more in their [final release](https://github.com/maybe-finance/maybe/releases/tag/v0.6.0) doc.
+# Finance
 
 ## Backstory
 
