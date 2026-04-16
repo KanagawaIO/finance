@@ -1,0 +1,73 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Daily at 06:00 UTC
+  workflow_dispatch: # Manual trigger
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Self-heal Gemfile (ensure kanagawa gem is at end)
+        run: bash .github/scripts/fix-gemfile-order.sh
+
+      - name: Add upstream and fetch
+        run: |
+          git remote add upstream https://github.com/we-promise/sure.git
+          git fetch upstream
+
+      - name: Attempt merge
+        id: merge
+        run: git merge upstream/main --no-edit
+        continue-on-error: true
+
+      - name: Push on success
+        if: steps.merge.outcome == 'success'
+        run: git push origin main
+
+      - name: Handle merge failure
+        if: steps.merge.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CONFLICTS=$(git diff --name-only --diff-filter=U | head -20)
+          git merge --abort
+
+          BODY="The automated upstream sync from \`we-promise/sure\` failed due to merge conflicts.
+
+          **Conflicting files:**
+          \`\`\`
+          ${CONFLICTS}
+          \`\`\`
+
+          **To resolve manually:**
+          \`\`\`bash
+          git remote add upstream https://github.com/we-promise/sure.git  # if not already added
+          git fetch upstream
+          git merge upstream/main
+          # resolve conflicts
+          git add .
+          git commit
+          git push origin main
+          \`\`\`"
+
+          gh issue create \
+            --title "Upstream sync conflict — manual resolution needed ($(date +%Y-%m-%d))" \
+            --body "$BODY" \
+            --label "upstream-sync"

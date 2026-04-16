@@ -553,6 +553,8 @@ Rails.application.routes.draw do
     end
   end
 
+  mount Kanagawa::Engine => "/b"
+
   # Defines the root path route ("/")
   root "pages#dashboard"
 end
