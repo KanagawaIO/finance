@@ -34,8 +34,8 @@ services:
       dockerfile: Dockerfile.production
     volumes:
       - app-storage:/rails/storage
-    ports:
-      - "${PORT:-3000}:3000"
+    expose:
+      - "3000"
     restart: unless-stopped
     environment:
       <<: *rails_env
