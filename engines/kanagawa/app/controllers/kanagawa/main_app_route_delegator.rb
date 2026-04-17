@@ -27,6 +27,32 @@ module Kanagawa
       main_app.root_url(*args, **kwargs)
     end
 
+    # Helpers called from host controller concerns (Onboardable, Invitable,
+    # etc.). They're INHERITED from ::ApplicationController via
+    # Rails.application.routes.url_helpers, so method_missing doesn't
+    # intercept — yet their internal url_for resolves against the engine's
+    # isolated router and raises UrlGenerationError. Shadow each one with a
+    # version that goes through main_app explicitly.
+    #
+    # Note: the view-context side is handled by method_missing below (the
+    # engine's routes.url_helpers module doesn't define these names, so
+    # bare calls from host-layout partials naturally fall through).
+    HOST_CONTROLLER_HELPERS = %i[
+      new_registration_path new_registration_url
+      new_session_path      new_session_url
+      new_password_reset_path new_password_reset_url
+      new_email_confirmation_path new_email_confirmation_url
+      onboarding_path onboarding_url
+      trial_onboarding_path trial_onboarding_url
+      upgrade_subscription_path upgrade_subscription_url
+    ].freeze
+
+    HOST_CONTROLLER_HELPERS.each do |helper|
+      define_method(helper) do |*args, **kwargs|
+        main_app.public_send(helper, *args, **kwargs)
+      end
+    end
+
     def method_missing(name, *args, **kwargs, &block)
       if name.to_s.end_with?("_path", "_url") && main_app.respond_to?(name)
         main_app.public_send(name, *args, **kwargs, &block)
