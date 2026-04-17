@@ -29,23 +29,20 @@ module Kanagawa
         indicator_class = active ? "bg-nav-indicator" : ""
         icon_wrapper_class = active ? "bg-container shadow-xs text-primary" : "group-hover:bg-surface-hover text-secondary"
         label_class = active ? "text-primary" : "text-secondary"
-        label = I18n.t("kanagawa.nav.label", default: "Business")
 
-        # Diagnostic — pin down why I18n.locale resolves to :en.
-        debug = {
-          i18n: I18n.locale,
-          user_locale: (Current.user&.locale rescue "(no_current_user)"),
-          family_locale: (Current.family&.locale rescue "(no_current_family)"),
-          accept_language: request.env["HTTP_ACCEPT_LANGUAGE"].to_s[0, 40],
-          ptbr_lookup: I18n.t("kanagawa.nav.label", locale: :"pt-BR", default: "MISSING"),
-          cached: response.headers["Cache-Control"].to_s[0, 40]
-        }
-        debug_attrs = debug.map { |k, v| %Q(data-kanagawa-debug-#{k}="#{ERB::Util.html_escape(v)}") }.join(" ")
+        # Resolve the label against the user's preferred locale directly
+        # rather than relying on I18n.locale. NavInjector is mixed into
+        # ActionController::Base via on_load at boot, which registers its
+        # after_action before Sure's `Localize` concern registers its
+        # around_action. Rails' filter chain then runs `inject_kanagawa_nav`
+        # *outside* the `I18n.with_locale(user_locale)` block, so
+        # `I18n.locale` has already reverted by the time we render.
+        label = I18n.t("kanagawa.nav.label", locale: kanagawa_effective_locale, default: "Business")
 
         # Mirrors the exact markup of app/views/layouts/shared/_nav_item.html.erb
         # Icon: Lucide "briefcase" (24x24)
         <<~HTML.gsub("\n", "")
-          <li #{debug_attrs}>
+          <li>
             <a href="/b" class="space-y-1 group block relative pb-1">
               <div class="grow flex flex-col lg:flex-row gap-1 items-center">
                 <div class="w-4 h-1 lg:w-1 lg:h-4 rounded-bl-sm rounded-br-sm lg:rounded-tr-sm lg:rounded-br-sm lg:rounded-bl-none #{indicator_class}"></div>
@@ -59,6 +56,20 @@ module Kanagawa
             </a>
           </li>
         HTML
+      end
+
+      # Mirrors the precedence of Sure's Localize concern but only for the
+      # label we need — no I18n.locale mutation, so we don't affect the
+      # request's real locale.
+      def kanagawa_effective_locale
+        candidate =
+          (Current.user&.locale.presence rescue nil) ||
+          (Current.family&.locale.presence rescue nil)
+        if candidate
+          sym = candidate.to_sym
+          return sym if I18n.available_locales.include?(sym)
+        end
+        I18n.locale
       end
   end
 end
