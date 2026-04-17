@@ -31,17 +31,10 @@ module Kanagawa
         label_class = active ? "text-primary" : "text-secondary"
         label = I18n.t("kanagawa.nav.label", default: "Business")
 
-        # Temporary diagnostic: embed the resolved locale and whether the
-        # engine's pt-BR translation resolves. Remove once the i18n plumbing
-        # is confirmed working.
-        debug_locale = I18n.locale
-        debug_pt_br_translation = I18n.t("kanagawa.nav.label", locale: :"pt-BR", default: "MISSING")
-        debug_pt_translation    = I18n.t("kanagawa.nav.label", locale: :pt,      default: "MISSING")
-
         # Mirrors the exact markup of app/views/layouts/shared/_nav_item.html.erb
         # Icon: Lucide "briefcase" (24x24)
         <<~HTML.gsub("\n", "")
-          <li data-kanagawa-debug-locale="#{ERB::Util.html_escape(debug_locale)}" data-kanagawa-debug-ptbr="#{ERB::Util.html_escape(debug_pt_br_translation)}" data-kanagawa-debug-pt="#{ERB::Util.html_escape(debug_pt_translation)}">
+          <li>
             <a href="/b" class="space-y-1 group block relative pb-1">
               <div class="grow flex flex-col lg:flex-row gap-1 items-center">
                 <div class="w-4 h-1 lg:w-1 lg:h-4 rounded-bl-sm rounded-br-sm lg:rounded-tr-sm lg:rounded-br-sm lg:rounded-bl-none #{indicator_class}"></div>
