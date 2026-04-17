@@ -2,6 +2,13 @@ module Kanagawa
   class ApplicationController < ::ApplicationController
     # Inherits auth, Current.user, Current.family, all helpers.
 
+    # isolate_namespace on the engine means engine helpers aren't
+    # auto-discovered by the host's `helper :all`. Pull them in explicitly
+    # (string form defers resolution until Zeitwerk is ready) so every
+    # Kanagawa controller's views have `kanagawa_brl`,
+    # `kanagawa_relative_date`, etc.
+    helper "kanagawa/dashboard"
+
     # The host's Onboardable concern (before_action on ApplicationController)
     # calls `new_registration_path`, `new_session_path`,
     # `new_password_reset_path` and `new_email_confirmation_path` to decide
