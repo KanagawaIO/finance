@@ -29,6 +29,7 @@ module Kanagawa
         indicator_class = active ? "bg-nav-indicator" : ""
         icon_wrapper_class = active ? "bg-container shadow-xs text-primary" : "group-hover:bg-surface-hover text-secondary"
         label_class = active ? "text-primary" : "text-secondary"
+        label = I18n.t("kanagawa.nav.label", default: "Business")
 
         # Mirrors the exact markup of app/views/layouts/shared/_nav_item.html.erb
         # Icon: Lucide "briefcase" (24x24)
@@ -42,7 +43,7 @@ module Kanagawa
                 </div>
               </div>
               <div class="grow flex justify-center lg:pl-2">
-                <p class="font-medium text-[11px] #{label_class}">Business</p>
+                <p class="font-medium text-[11px] #{label_class}">#{ERB::Util.html_escape(label)}</p>
               </div>
             </a>
           </li>

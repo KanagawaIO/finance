@@ -1,0 +1,284 @@
+<%
+  deadline_days = (@annual_report.deadline - @today).to_i
+  report_status_pill = case @annual_report.status
+                       when :draft then "bg-yellow-100 text-yellow-800"
+                       when :submitted, :under_review then "bg-blue-100 text-blue-800"
+                       when :approved, :approved_with_caveats then "bg-green-100 text-green-800"
+                       else "bg-red-100 text-red-800"
+                       end
+%>
+
+<div class="space-y-6 py-6">
+  <% if @mock_banner %>
+    <div class="rounded-lg border border-yellow-200 bg-yellow-50 p-4 flex gap-3">
+      <div class="shrink-0 mt-0.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-700"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      </div>
+      <div class="min-w-0">
+        <p class="text-sm font-medium text-yellow-900"><%= t("kanagawa.dashboard.mock_banner.title") %></p>
+        <p class="text-sm text-yellow-800 mt-0.5"><%= t("kanagawa.dashboard.mock_banner.body_html").html_safe %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <%# ── Header: organ context + fiscal year ─────────────────────────────── %>
+  <header class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+    <div class="space-y-1">
+      <p class="text-sm text-secondary">
+        <%= @organ.party_name %> (<%= @organ.party_sigla %>) · <%= @organ.organ_name %>
+      </p>
+      <h1 class="text-2xl font-medium text-primary"><%= t("kanagawa.dashboard.header.heading") %></h1>
+      <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.header.subtitle") %></p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-container-inset px-3 py-1 text-xs font-medium text-secondary">
+        <%= t("kanagawa.dashboard.organ.sphere_label") %>: <%= t("kanagawa.dashboard.spheres.#{@organ.sphere}") %>
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-container-inset px-3 py-1 text-xs font-medium text-secondary">
+        <%= t("kanagawa.dashboard.organ.cnpj_label") %>: <%= @organ.cnpj %>
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-container-inset px-3 py-1 text-xs font-medium text-secondary">
+        <%= t("kanagawa.dashboard.organ.uf_label") %>: <%= @organ.uf %>
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-container-inset px-3 py-1 text-xs font-medium text-secondary">
+        <%= t("kanagawa.dashboard.header.fiscal_year", year: @fiscal_year) %>
+      </span>
+    </div>
+  </header>
+
+  <%# ── Hero: annual report status ─────────────────────────────────────── %>
+  <section class="rounded-xl border border-primary bg-container p-6 shadow-xs">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div class="space-y-2 min-w-0">
+        <div class="flex items-center gap-3 flex-wrap">
+          <h2 class="text-lg font-medium text-primary">
+            <%= t("kanagawa.dashboard.annual_report.heading", year: @annual_report.year) %>
+          </h2>
+          <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= report_status_pill %>">
+            <%= t("kanagawa.dashboard.annual_report.status.#{@annual_report.status}") %>
+          </span>
+        </div>
+        <p class="text-sm text-secondary">
+          <%= t("kanagawa.dashboard.annual_report.pieces_progress",
+                done: @annual_report.pieces_completed,
+                total: @annual_report.pieces_total) %>
+        </p>
+        <div class="w-full lg:w-96 h-2 rounded-full bg-container-inset overflow-hidden">
+          <div class="h-full bg-blue-500" style="width: <%= (@annual_report.pieces_completed.to_f / @annual_report.pieces_total * 100).round %>%"></div>
+        </div>
+      </div>
+      <div class="flex flex-col items-start lg:items-end gap-1">
+        <p class="text-xs uppercase tracking-wide text-subdued"><%= t("kanagawa.dashboard.annual_report.deadline_label") %></p>
+        <p class="text-lg font-semibold text-primary"><%= l(@annual_report.deadline) %></p>
+        <% if deadline_days >= 0 %>
+          <p class="text-sm font-medium <%= deadline_days <= 7 ? 'text-red-700' : 'text-yellow-700' %>">
+            <%= t("kanagawa.dashboard.annual_report.days_remaining", count: deadline_days) %>
+          </p>
+        <% else %>
+          <p class="text-sm font-medium text-red-700">
+            <%= t("kanagawa.dashboard.annual_report.overdue", count: deadline_days.abs) %>
+          </p>
+        <% end %>
+        <p class="text-xs text-subdued mt-1"><%= t("kanagawa.dashboard.annual_report.deadline_caption") %></p>
+      </div>
+    </div>
+  </section>
+
+  <%# ── Bank accounts: 3 segregated accounts ───────────────────────────── %>
+  <section>
+    <div class="flex items-baseline justify-between mb-3">
+      <div>
+        <h2 class="text-lg font-medium text-primary"><%= t("kanagawa.dashboard.bank_accounts.heading") %></h2>
+        <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.bank_accounts.caption") %></p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <% @bank_accounts.each do |acc| %>
+        <div class="rounded-xl border border-primary bg-container p-5 shadow-xs space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-medium text-primary"><%= t("kanagawa.dashboard.bank_accounts.kinds.#{acc.kind}.title") %></h3>
+              <p class="text-xs text-subdued mt-0.5"><%= t("kanagawa.dashboard.bank_accounts.kinds.#{acc.kind}.caption") %></p>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-secondary shrink-0"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-subdued"><%= t("kanagawa.dashboard.bank_accounts.balance_label") %></p>
+            <p class="text-2xl font-semibold text-primary tabular-nums"><%= kanagawa_brl(acc.balance_cents) %></p>
+          </div>
+          <div class="text-xs text-secondary pt-1 border-t border-primary">
+            <%= acc.bank %> · <%= t("kanagawa.dashboard.bank_accounts.agency_label") %> <%= acc.agency %> · <%= t("kanagawa.dashboard.bank_accounts.number_label") %> <%= acc.number %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# ── Fundo Partidário obligations (XVIII / XIX / XX) ────────────────── %>
+  <section class="rounded-xl border border-primary bg-container p-6 shadow-xs space-y-4">
+    <div class="flex items-baseline justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-medium text-primary"><%= t("kanagawa.dashboard.fundo_obligations.heading") %></h2>
+        <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.fundo_obligations.caption") %></p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs uppercase tracking-wide text-subdued"><%= t("kanagawa.dashboard.fundo_obligations.total_received") %></p>
+        <p class="text-lg font-semibold text-primary tabular-nums"><%= kanagawa_brl(@fundo_received_cents) %></p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <% @fundo_obligations.each do |ob| %>
+        <%
+          status = kanagawa_obligation_status(ob.applied_cents, ob.target_cents, cap: ob.cap)
+          classes = kanagawa_severity_classes(status)
+          ratio = (ob.applied_cents.to_f / ob.target_cents).clamp(0, 1.5)
+          bar_width = [ (ratio * 100).round, 100 ].min
+          bar_color = case status
+                      when :success then "bg-green-500"
+                      when :warning then "bg-yellow-500"
+                      else "bg-red-500"
+                      end
+        %>
+        <div class="rounded-lg border <%= classes[:border] %> <%= classes[:bg] %> p-4 space-y-2">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <p class="font-medium text-primary text-sm"><%= t("kanagawa.dashboard.fundo_obligations.items.#{ob.key}.title") %></p>
+              <p class="text-xs text-secondary mt-0.5"><%= t("kanagawa.dashboard.fundo_obligations.items.#{ob.key}.caption") %></p>
+            </div>
+            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium <%= classes[:pill] %> uppercase tracking-wide shrink-0">
+              <%= t("kanagawa.dashboard.fundo_obligations.manual_ref", ref: ob.manual_ref) %>
+            </span>
+          </div>
+          <div class="flex items-baseline justify-between text-sm">
+            <span class="text-secondary"><%= t("kanagawa.dashboard.fundo_obligations.applied_label") %></span>
+            <span class="font-semibold text-primary tabular-nums"><%= kanagawa_brl(ob.applied_cents) %></span>
+          </div>
+          <div class="h-2 rounded-full bg-container-inset overflow-hidden">
+            <div class="h-full <%= bar_color %>" style="width: <%= bar_width %>%"></div>
+          </div>
+          <div class="flex items-baseline justify-between text-xs text-subdued">
+            <span>
+              <%= ob.cap ? t("kanagawa.dashboard.fundo_obligations.cap_label") : t("kanagawa.dashboard.fundo_obligations.target_label") %>:
+              <span class="tabular-nums"><%= kanagawa_brl(ob.target_cents) %></span>
+            </span>
+            <span>
+              <%
+                pct_key = ob.cap ? "kanagawa.dashboard.fundo_obligations.max_allowed" : "kanagawa.dashboard.fundo_obligations.min_required"
+              %>
+              <%= t(pct_key, pct: number_with_precision(ob.required_pct, precision: 0)) %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# ── Two-column: pending actions + upcoming deadlines ───────────────── %>
+  <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2 rounded-xl border border-primary bg-container p-6 shadow-xs">
+      <div class="mb-4">
+        <h2 class="text-lg font-medium text-primary"><%= t("kanagawa.dashboard.pending_actions.heading") %></h2>
+        <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.pending_actions.caption") %></p>
+      </div>
+      <ul class="divide-y divide-primary">
+        <% @pending_actions.each do |a| %>
+          <% classes = kanagawa_severity_classes(a.severity) %>
+          <li class="py-3 first:pt-0 last:pb-0 flex gap-3 items-start">
+            <div class="shrink-0 mt-1">
+              <% if a.severity == :destructive %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              <% end %>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <p class="font-medium text-primary text-sm">
+                  <%= t("kanagawa.dashboard.pending_actions.items.#{a.key}.title") %>
+                </p>
+                <span class="text-[10px] font-medium uppercase tracking-wide <%= classes[:pill] %> rounded-full px-2 py-0.5">
+                  <%= t("kanagawa.dashboard.pending_actions.manual_ref", ref: a.manual_ref) %>
+                </span>
+              </div>
+              <p class="text-sm text-secondary mt-0.5">
+                <%= t("kanagawa.dashboard.pending_actions.items.#{a.key}.body",
+                      count: a.count,
+                      amount: (a.amount_cents ? kanagawa_brl(a.amount_cents) : "")) %>
+              </p>
+              <p class="text-xs text-subdued mt-1">
+                <%= kanagawa_relative_date(a.deadline) %>
+              </p>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <aside class="rounded-xl border border-primary bg-container p-6 shadow-xs">
+      <div class="mb-4">
+        <h2 class="text-lg font-medium text-primary"><%= t("kanagawa.dashboard.upcoming_deadlines.heading") %></h2>
+        <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.upcoming_deadlines.caption") %></p>
+      </div>
+      <ol class="space-y-4 relative border-l-2 border-primary pl-4">
+        <% @upcoming_deadlines.each do |d| %>
+          <li class="relative">
+            <span class="absolute -left-[22px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-container"></span>
+            <p class="text-xs uppercase tracking-wide text-subdued tabular-nums"><%= l(d.date) %></p>
+            <p class="font-medium text-primary text-sm mt-0.5">
+              <%= t("kanagawa.dashboard.upcoming_deadlines.items.#{d.key}.title", year: @fiscal_year) %>
+            </p>
+            <p class="text-xs text-secondary mt-0.5">
+              <%= t("kanagawa.dashboard.upcoming_deadlines.items.#{d.key}.caption") %>
+            </p>
+          </li>
+        <% end %>
+      </ol>
+    </aside>
+  </section>
+
+  <%# ── Recent activity ────────────────────────────────────────────────── %>
+  <section class="rounded-xl border border-primary bg-container p-6 shadow-xs">
+    <div class="mb-4">
+      <h2 class="text-lg font-medium text-primary"><%= t("kanagawa.dashboard.recent_activity.heading") %></h2>
+      <p class="text-sm text-secondary"><%= t("kanagawa.dashboard.recent_activity.caption") %></p>
+    </div>
+    <ul class="divide-y divide-primary">
+      <% @recent_activity.each do |a| %>
+        <li class="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-container-inset flex items-center justify-center">
+            <% case a.kind %>
+            <% when :donation_financial, :fundo_partidario_inflow, :donation_estimable %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><path d="m6 9 6-6 6 6"/><path d="M12 3v14"/><path d="M5 21h14"/></svg>
+            <% when :expense %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600"><path d="m18 15-6 6-6-6"/><path d="M12 3v18"/></svg>
+            <% when :receipt_issued %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6"/><path d="M16 12h-6"/><path d="M10 16h6"/></svg>
+            <% else %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <% end %>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium text-primary truncate">
+              <%= t("kanagawa.dashboard.recent_activity.kinds.#{a.kind}") %> · <span class="text-secondary font-normal"><%= a.counterparty %></span>
+            </p>
+            <p class="text-xs text-subdued"><%= kanagawa_relative_date(a.when) %></p>
+          </div>
+          <div class="text-right shrink-0">
+            <% if a.direction %>
+              <p class="text-sm font-semibold tabular-nums <%= a.direction == :in ? 'text-green-700' : 'text-red-700' %>">
+                <%= a.direction == :in ? "+" : "-" %><%= kanagawa_brl(a.amount_cents) %>
+              </p>
+            <% else %>
+              <p class="text-sm font-semibold text-primary tabular-nums"><%= kanagawa_brl(a.amount_cents) %></p>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+  <footer class="pt-2 text-center">
+    <p class="text-xs text-subdued">Res. TSE nº 23.432/14 · Lei nº 9.096/1995 · Lei nº 9.504/1997</p>
+  </footer>
+</div>

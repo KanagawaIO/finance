@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanagawa — Roadmap de Entrega</title>
+  <style>
+    :root {
+      --primary: #1f6feb;
+      --primary-soft: #e7f0ff;
+      --text: #1f2937;
+      --text-muted: #4b5563;
+      --text-subtle: #6b7280;
+      --surface: #ffffff;
+      --surface-alt: #f9fafb;
+      --border: #e5e7eb;
+      --s: #6b7280;
+      --m: #0891b2;
+      --l: #b45309;
+      --xl: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--surface-alt);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+    header.page {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    header.page h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+    header.page p.lead {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+    header.page .badge {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    section h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2 svg { flex: none; color: var(--primary); }
+    section p { color: var(--text-muted); margin: 0 0 12px; }
+    ul.principles { margin: 0; padding-left: 20px; color: var(--text-muted); }
+    ul.principles li { margin-bottom: 6px; }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--border);
+    }
+    .wave {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+    }
+    .wave::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 22px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 3px solid var(--primary);
+    }
+    .wave-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .wave h3 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--text);
+    }
+    .wave h3 .number {
+      color: var(--primary);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .wave .problem {
+      color: var(--text-muted);
+      font-style: italic;
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
+    .wave ul {
+      margin: 8px 0 12px;
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .wave ul li { margin-bottom: 4px; }
+    .wave .rationale {
+      background: var(--surface-alt);
+      border-left: 3px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .wave .rationale strong { color: var(--text); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--surface);
+      text-transform: uppercase;
+    }
+    .pill.s  { background: var(--s); }
+    .pill.m  { background: var(--m); }
+    .pill.l  { background: var(--l); }
+    .pill.xl { background: var(--xl); }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .legend-item {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .legend-item .pill { margin-bottom: 6px; }
+    .legend-item p { font-size: 13px; margin: 0; }
+
+    dl.glossary { margin: 0; }
+    dl.glossary dt {
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 12px;
+    }
+    dl.glossary dd {
+      margin: 2px 0 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 12px;
+      padding: 16px 0 0;
+    }
+
+    @media print {
+      body { background: #fff; }
+      main { padding: 0; }
+      section, .wave, header.page { box-shadow: none; page-break-inside: avoid; }
+      .timeline::before, .wave::before { display: none; }
+      .timeline { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page">
+      <span class="badge">Kanagawa · Módulo /b</span>
+      <h1>Sistema de Prestação de Contas Anual</h1>
+      <p class="lead">Roadmap de entrega em 10 ondas, para conformidade plena com a Resolução TSE nº 23.432/14. Documento dirigido a tesoureiros partidários, contadores, conselhos fiscais e demais responsáveis.</p>
+    </header>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2.5 2.5"/></svg>
+        O que é este sistema
+      </h2>
+      <p>Uma solução integrada, construída como extensão do aplicativo <strong>Sure</strong>, para apoiar o órgão partidário — em qualquer esfera (nacional, estadual, distrital, municipal, zonal, inclusive comissões provisórias) — na organização contábil, controle de doações, gestão de despesas e apresentação anual das contas à Justiça Eleitoral, observando todas as regras da Resolução TSE nº 23.432/14 e da legislação correlata (Lei nº 9.096/95 e Lei nº 9.504/97).</p>
+      <p>O objetivo final é que o órgão partidário conclua a prestação de contas anual, entregue até 30 de abril de cada ano, com total rastreabilidade das receitas, dos gastos e dos recursos do Fundo Partidário, sem depender de planilhas avulsas e sem risco de perder prazos legais.</p>
+    </section>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.12 0 4.07.74 5.61 1.97"/></svg>
+        Princípios de desenvolvimento
+      </h2>
+      <ul class="principles">
+        <li><strong>Conformidade total com o TSE</strong> — cada regra implementada traz a citação do item do manual correspondente.</li>
+        <li><strong>Zero impacto no aplicativo original</strong> — o módulo vive em pasta isolada; atualizações do Sure continuam funcionando sem conflito.</li>
+        <li><strong>Entrega iterativa por ondas</strong> — cada onda habilita um conjunto coerente de funções do órgão partidário, sem esperar o sistema inteiro.</li>
+        <li><strong>Totalmente multilíngue</strong> — o sistema suporta todos os idiomas que o Sure suporta; esta apresentação, especificamente, é apenas em português.</li>
+        <li><strong>Auditoria desde o primeiro commit</strong> — toda entrega é rastreável por artigo da Resolução.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+        Mapa das Ondas
+      </h2>
+      <p>Cada onda abaixo é um marco entregável. O número da onda indica a ordem planejada; o esforço relativo aparece ao lado.</p>
+
+      <div class="timeline">
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 1</span>Fundação</h3>
+            <span class="pill m">Esforço M</span>
+          </div>
+          <p class="problem">Antes de qualquer função, é preciso representar o partido, seus órgãos e quem é responsável.</p>
+          <ul>
+            <li>Cadastro do partido (CNPJ, sigla, denominação)</li>
+            <li>Hierarquia de órgãos em cinco esferas: nacional, estadual, distrital, municipal e zonal, inclusive comissões provisórias</li>
+            <li>Registro dos estatutos partidários, com as matérias exigidas pelo item II do manual (normas financeiras e critérios de distribuição do Fundo Partidário)</li>
+            <li>Papéis no órgão: presidente, tesoureiro, contador, advogado, conselho fiscal</li>
+            <li>Navegação e páginas iniciais do módulo, totalmente traduzíveis</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> é a base — nenhuma outra onda funciona sem partido, órgão e responsáveis cadastrados.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 2</span>Contas bancárias e doadores</h3>
+            <span class="pill m">Esforço M</span>
+          </div>
+          <p class="problem">Todo movimento financeiro passa por conta bancária específica e exige identificação do doador.</p>
+          <ul>
+            <li>Três tipos de conta segregados: Fundo Partidário, Doações para Campanha, Outros Recursos</li>
+            <li>Recepção mensal dos extratos eletrônicos do banco, com identificação de contraparte</li>
+            <li>Cadastro de doadores, pessoa física (CPF) e jurídica (CNPJ), com validação</li>
+            <li>Classificador automático de fontes vedadas (14 categorias do item XI), incluindo doação indireta por cadeia societária</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> sem as contas segregadas e sem o cadastro de doadores classificados, nada pode ser recebido nem gasto dentro da norma.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 3</span>Doações e recibos</h3>
+            <span class="pill l">Esforço L</span>
+          </div>
+          <p class="problem">Doações são a principal fonte de receita e exigem emissão de recibo sequencial em prazo curto.</p>
+          <ul>
+            <li>Doações financeiras por cheque nominal cruzado ou transferência identificada</li>
+            <li>Doações estimáveis em dinheiro (bens, cessão temporária, serviços), avaliadas a preço de mercado</li>
+            <li>Emissão de recibo partidário com numeração sequencial obtida no TSE, dentro de 15 dias (financeiras) ou 5 dias (estimáveis)</li>
+            <li>Recusa de doação identificável com estorno ao doador até o último dia útil do mês seguinte ao crédito</li>
+            <li>Limites em ano eleitoral: 2% do faturamento bruto da pessoa jurídica e 10% do rendimento bruto da pessoa física, com isenção até R$ 50 mil para bens próprios</li>
+            <li>Arrecadação pela internet com cartão de crédito/débito e rastreio de estornos</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> doações têm os prazos mais curtos da Resolução e são a maior fonte de risco — precisam estar cobertas antes das despesas.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 4</span>Recolhimentos ao Tesouro Nacional</h3>
+            <span class="pill s">Esforço S</span>
+          </div>
+          <p class="problem">Recursos de origem não identificada ou de fonte vedada precisam sair da conta do partido rapidamente.</p>
+          <ul>
+            <li>Detecção de recursos de origem não identificada (item XII — três condições)</li>
+            <li>Recolhimento via GRU ao Tesouro Nacional até o último dia útil do mês seguinte ao crédito</li>
+            <li>Estorno ou recolhimento de valores vindos de fontes vedadas, no mesmo prazo</li>
+            <li>Anexação da GRU à prestação de contas</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> é uma onda pequena, mas bloqueia a Onda 7 — a prestação de contas exige cópia das GRU como peça obrigatória (item XXIV.g).</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 5</span>Gastos partidários</h3>
+            <span class="pill l">Esforço L</span>
+          </div>
+          <p class="problem">Gastos precisam ser classificados, pagos por forma identificada e comprovados por documento fiscal.</p>
+          <ul>
+            <li>Categorias permitidas ao Fundo Partidário: manutenção de sedes, propaganda doutrinária, alistamento e campanhas, fundação de pesquisa, programas de participação política das mulheres</li>
+            <li>Pagamento obrigatório por cheque nominal cruzado ou transação bancária com CPF/CNPJ do beneficiário</li>
+            <li>Fundo de Caixa para pequeno vulto: teto de R$ 5.000, itens até R$ 400, anual até 2% do exercício anterior, sem fracionamento</li>
+            <li>Limite de 50% para despesas com pessoal em cada esfera</li>
+            <li>Destinação mínima de 20% do Fundo Partidário à fundação de pesquisa e educação política (órgãos nacionais)</li>
+            <li>Destinação mínima de 5% aos programas de participação política das mulheres, com carry-over e penalidade de 2,5%</li>
+            <li>Assunção de obrigações entre órgãos, por acordo formal</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> sem despesas rastreadas, a prestação de contas anual (Onda 7) não tem dados reais para compor os demonstrativos.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 6</span>Sobras de campanha e comercialização</h3>
+            <span class="pill s">Esforço S</span>
+          </div>
+          <p class="problem">Fecha a porta da receita com casos especiais do calendário partidário.</p>
+          <ul>
+            <li>Sobras de campanha, financeiras e não financeiras (bens permanentes), por eleição e por esfera</li>
+            <li>Comunicação de eventos e venda de produtos com antecedência mínima de 5 dias úteis à Justiça Eleitoral</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> onda pequena que completa o lado da receita antes de compor a prestação.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 7</span>Prestação de contas anual</h3>
+            <span class="pill xl">Esforço XL</span>
+          </div>
+          <p class="problem">Momento central: compor e apresentar à Justiça Eleitoral todas as peças até 30 de abril.</p>
+          <ul>
+            <li>Escrituração contábil digital (SPED) conforme o plano de contas do TSE</li>
+            <li>Composição das 22 peças obrigatórias do item XXIV (a–v), incluindo extratos, conciliações, documentos fiscais, pareceres e notas explicativas</li>
+            <li>Geração automática dos demonstrativos: Fundo Partidário recebido e distribuído, doações, obrigações a pagar, dívidas de campanha, receitas e gastos, transferências eleitorais, contribuições, sobras, fluxos de caixa</li>
+            <li>Workflow de envio por esfera: juiz eleitoral (municipal/zonal), TRE (estadual), TSE (nacional)</li>
+            <li>Escrituração mensal em anos eleitorais, com envio via SPED até o 15º dia útil do mês seguinte</li>
+            <li>Assinaturas digitais encadeadas: presidente, tesoureiro, advogado, profissional de contabilidade</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> esta onda só faz sentido quando as receitas (Ondas 2, 3, 6), os recolhimentos (Onda 4) e os gastos (Onda 5) já estão no sistema — é onde tudo se consolida.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 8</span>Julgamento e sanções</h3>
+            <span class="pill xl">Esforço XL</span>
+          </div>
+          <p class="problem">Após a apresentação, inicia-se o rito judicial; o sistema precisa acompanhá-lo até o trânsito em julgado.</p>
+          <ul>
+            <li>Máquina de estados do processo de prestação de contas</li>
+            <li>Fluxo de omissão no dever de prestar contas: notificação em 72 horas, citação em 5 dias (item XXV)</li>
+            <li>Exame técnico preliminar e exame técnico propriamente dito (item XXVIII)</li>
+            <li>Diligências com prazo de 30 dias, quebra de sigilo por decisão judicial</li>
+            <li>Impugnações do Ministério Público Eleitoral ou de outros partidos</li>
+            <li>Parecer conclusivo com totais de receitas, gastos, impropriedades, irregularidades e percentuais</li>
+            <li>Quatro desfechos de julgamento: aprovação, aprovação com ressalvas, desaprovação parcial, desaprovação, contas não prestadas</li>
+            <li>Sanção de suspensão do repasse de Fundo Partidário (proporcional, de 1 a 12 meses)</li>
+            <li>Recursos, pedido de revisão e regularização de contas não prestadas</li>
+            <li>Execução das decisões: GRU, Cadin, AGU</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> é o par natural da Onda 7 — uma vez apresentadas as contas, a Resolução define um rito completo que o sistema precisa modelar para acompanhar prazos e efeitos.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 9</span>Fusão, incorporação e extinção</h3>
+            <span class="pill m">Esforço M</span>
+          </div>
+          <p class="problem">Casos excepcionais do ciclo partidário que exigem prestações de contas específicas.</p>
+          <ul>
+            <li>Fusão: novo CNPJ, encerramento dos antigos, transferência de saldos</li>
+            <li>Incorporação: cancelamento do incorporado, transferência de ativos e passivos</li>
+            <li>Extinção: devolução do Fundo Partidário e transferência do patrimônio à União</li>
+          </ul>
+          <p class="rationale"><strong>Por que agora:</strong> são situações raras — não bloqueiam a operação anual de um órgão regular, por isso ficam depois do rito comum.</p>
+        </article>
+
+        <article class="wave">
+          <div class="wave-header">
+            <h3><span class="number">Onda 10</span>Integrações externas</h3>
+            <span class="pill xl">Esforço XL</span>
+          </div>
+          <p class="problem">Substituir os mocks internos por conexões reais com os sistemas externos.</p>
+          <ul>
+            <li>Plano de contas específico do TSE, carregado e versionado</li>
+            <li>Portal do TSE: numeração de recibos e envio das peças complementares da prestação de contas</li>
+            <li>Diário da Justiça Eletrônico e imprensa oficial, para publicação das peças obrigatórias</li>
+            <li>SPED / Receita Federal: envio da escrituração contábil digital</li>
+          </ul>
+          <p class="rationale"><strong>Por que por último:</strong> as integrações externas só agregam valor quando os fluxos internos já estão completos e testados — só assim é possível confiar no que é enviado para fora.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        Legenda de esforço
+      </h2>
+      <p>Os esforços são relativos, não datas. Representam a quantidade de trabalho técnico envolvida em cada onda.</p>
+      <div class="legend-grid">
+        <div class="legend-item">
+          <span class="pill s">S · Pequeno</span>
+          <p>Uma parte bem contida, de escopo limitado e poucas regras.</p>
+        </div>
+        <div class="legend-item">
+          <span class="pill m">M · Médio</span>
+          <p>Várias peças, mas sem integrações externas e sem máquinas de estado complexas.</p>
+        </div>
+        <div class="legend-item">
+          <span class="pill l">L · Grande</span>
+          <p>Múltiplos módulos, regras de negócio robustas e prazos legais exigentes.</p>
+        </div>
+        <div class="legend-item">
+          <span class="pill xl">XL · Muito grande</span>
+          <p>Integrações externas (TSE, Receita Federal, DJE) ou máquinas de estado completas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        Fora do escopo desta versão
+      </h2>
+      <ul class="principles">
+        <li>Atendimento a normas de campanhas eleitorais em si — o módulo cobre a prestação <em>anual</em> do partido; campanhas seguem resoluções próprias do TSE.</li>
+        <li>Automação completa do envio SPED à Receita Federal antes da Onda 10 — até lá, o envio é registrado como comprovante, não disparado diretamente pelo sistema.</li>
+        <li>Conexão direta com o portal do TSE para obter numeração de recibos antes da Onda 10 — a numeração é simulada localmente nas ondas anteriores.</li>
+        <li>Publicação automática no Diário da Justiça Eletrônico antes da Onda 10.</li>
+        <li>Geração de peças para comissões provisórias extintas fora do escopo da Onda 9.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Glossário
+      </h2>
+      <dl class="glossary">
+        <dt>Fundo Partidário</dt>
+        <dd>Fundo Especial de Assistência Financeira aos Partidos Políticos, criado pela Lei nº 9.096/1995. Recurso público, impenhorável, com regras próprias de aplicação.</dd>
+
+        <dt>Prestação de contas anual</dt>
+        <dd>Obrigação do partido, em todas as esferas, de apresentar à Justiça Eleitoral até 30 de abril as contas do exercício anterior.</dd>
+
+        <dt>Esfera partidária</dt>
+        <dd>Nível hierárquico do órgão do partido: nacional, estadual, distrital, municipal ou zonal.</dd>
+
+        <dt>Sobras de campanha</dt>
+        <dd>Diferença positiva entre recursos arrecadados e gastos realizados em campanhas, somada a bens materiais permanentes adquiridos durante o período.</dd>
+
+        <dt>Fontes vedadas</dt>
+        <dd>Entidades proibidas de doar a partidos: governos estrangeiros, administração pública, concessionárias, entidades sindicais, fundações públicas e outras listadas no item XI do manual.</dd>
+
+        <dt>Recursos de origem não identificada</dt>
+        <dd>Valores recebidos sem identificação do doador (nome, CPF ou CNPJ), ou com dados inválidos, inexistentes ou cancelados.</dd>
+
+        <dt>Fundo de Caixa</dt>
+        <dd>Reserva em dinheiro, com teto de R$ 5.000, destinada a despesas de pequeno vulto (itens de até R$ 400), vedado o fracionamento.</dd>
+
+        <dt>SPED</dt>
+        <dd>Sistema Público de Escrituração Digital, da Receita Federal. Canal obrigatório para a escrituração contábil dos partidos.</dd>
+
+        <dt>Impugnação</dt>
+        <dd>Manifestação formal contra a prestação de contas apresentada, dirigida ao juiz ou relator. Pode ser apresentada pelo Ministério Público Eleitoral ou por qualquer partido.</dd>
+
+        <dt>Parecer conclusivo</dt>
+        <dd>Documento final da unidade técnica que indica impropriedades, irregularidades e recomenda o julgamento das contas.</dd>
+
+        <dt>GRU</dt>
+        <dd>Guia de Recolhimento da União, usada para devolver ao Tesouro Nacional recursos de fonte vedada ou origem não identificada.</dd>
+      </dl>
+    </section>
+
+    <footer>
+      Documento gerado a partir do plano técnico do módulo Kanagawa — referências: Resolução TSE nº 23.432/14, Lei nº 9.096/1995, Lei nº 9.504/1997.
+    </footer>
+  </main>
+</body>
+</html>

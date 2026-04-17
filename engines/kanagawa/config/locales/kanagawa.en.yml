@@ -1,0 +1,144 @@
+en:
+  kanagawa:
+    nav:
+      label: "Parties"
+    home:
+      heading: "Annual Political-Party Accountability"
+      intro_html: "Welcome to the <strong>Kanagawa</strong> module — annual accountability for Brazilian political parties per <strong>TSE Resolution 23.432/14</strong>."
+    dashboard:
+      mock_banner:
+        title: "Demo dashboard"
+        body_html: "The figures below are <strong>fictional</strong>, shown only to illustrate the TSE Res. 23.432/14 domain before the real models land. Follow delivery in the <a href=\"https://github.com/KanagawaIO/finance/issues?q=label%3Akanagawa\" class=\"underline\">issue roadmap</a>."
+      header:
+        heading: "Party organ dashboard"
+        subtitle: "Overview of the current annual accountability report."
+        fiscal_year: "Fiscal year %{year}"
+        switch_organ: "Switch organ"
+      organ:
+        sphere_label: "Sphere"
+        cnpj_label: "CNPJ"
+        uf_label: "State"
+      spheres:
+        national: "National"
+        state: "State"
+        district: "District"
+        municipal: "Municipal"
+        zonal: "Zonal"
+      annual_report:
+        heading: "Annual report %{year}"
+        status:
+          draft: "In preparation"
+          submitted: "Submitted — awaiting judgment"
+          under_review: "Under technical review"
+          approved: "Approved"
+          approved_with_caveats: "Approved with caveats"
+          partially_disapproved: "Partially disapproved"
+          disapproved: "Disapproved"
+          not_presented: "Not presented"
+        pieces_progress: "%{done} of %{total} pieces completed"
+        deadline_label: "Legal deadline"
+        deadline_caption: "Submission due by April 30 of the following year (TSE Res. 23.432/14 XXIII)"
+        cta: "Continue report"
+        days_remaining:
+          zero: "Due today"
+          one: "1 day remaining"
+          other: "%{count} days remaining"
+        overdue:
+          one: "Overdue by 1 day"
+          other: "Overdue by %{count} days"
+      bank_accounts:
+        heading: "Segregated bank accounts"
+        caption: "Distinct accounts required per revenue nature (TSE Res. 23.432/14, item V)"
+        balance_label: "Balance"
+        agency_label: "Ag.:"
+        number_label: "Acc.:"
+        kinds:
+          fundo_partidario:
+            title: "Fundo Partidário"
+            caption: "Public party funding (Lei 9.096/95 art. 38)"
+          doacoes_campanha:
+            title: "Campaign Donations"
+            caption: "Donations routed to electoral campaigns (Lei 9.504/97)"
+          outros_recursos:
+            title: "Other Resources"
+            caption: "Contributions, events, asset sales, yields, surpluses"
+      fundo_obligations:
+        heading: "Fundo Partidário allocation"
+        caption: "Required minima and maximum caps per the Resolution"
+        total_received: "Received in the fiscal year"
+        applied_label: "Applied"
+        target_label: "Target"
+        cap_label: "Cap"
+        min_required: "minimum %{pct}%"
+        max_allowed: "maximum %{pct}%"
+        manual_ref: "Item %{ref}"
+        items:
+          fundacao:
+            title: "Research & political-education foundation"
+            caption: "20% minimum (national organs) — item XVIII"
+          mulheres:
+            title: "Women's political-participation programs"
+            caption: "5% minimum per sphere, with carryover and penalty — item XX"
+          pessoal_cap:
+            title: "Personnel expenses"
+            caption: "50% cap per sphere — item XIX"
+      pending_actions:
+        heading: "Pending actions"
+        caption: "TSE Resolution deadlines requiring action"
+        manual_ref: "TSE Res. 23.432/14 — item %{ref}"
+        view_cta: "Resolve"
+        items:
+          pending_receipts:
+            title: "Issue donation receipts"
+            body: "%{count} donations await issuance of the TSE party receipt. Maximum 15 days from the credit date."
+          unidentified_gru:
+            title: "Remit unidentified origin"
+            body: "%{amount} flagged as unidentified origin. Issue a GRU to the Treasury by the last business day of the month following the credit."
+          forbidden_reversal:
+            title: "Reverse forbidden source"
+            body: "%{count} forbidden-source donation detected. Reversal due by the last business day of the month following the credit."
+          monthly_bookkeeping:
+            title: "Monthly bookkeeping overdue"
+            body: "Last month's SPED digital bookkeeping has passed the 15th business day. Applies in election years."
+          annual_report_pieces:
+            title: "Outstanding annual-report pieces"
+            body: "%{count} pieces from item XXIV are still to be filled before submission."
+      recent_activity:
+        heading: "Recent activity"
+        caption: "Latest operations recorded in the organ's books"
+        amount_label: "Amount"
+        kinds:
+          donation_financial: "Financial donation received"
+          donation_estimable: "In-kind donation"
+          expense: "Party expense"
+          fundo_partidario_inflow: "Fundo Partidário inflow"
+          receipt_issued: "Donation receipt issued"
+        direction:
+          in: "Inflow"
+          out: "Outflow"
+      upcoming_deadlines:
+        heading: "Upcoming deadlines"
+        caption: "Obligations due in the coming months"
+        items:
+          annual_report:
+            title: "Submit annual report for %{year}"
+            caption: "TSE Res. 23.432/14, item XXIII"
+          bank_statements_april:
+            title: "April bank statements"
+            caption: "Bank to forward by day 30 of the following month (item V.1)"
+          monthly_bookkeeping_election:
+            title: "Monthly bookkeeping — May/2026"
+            caption: "Election year — SPED submission by the 15th business day (item XXIII)"
+          foundation_allocation_review:
+            title: "Foundation allocation review"
+            caption: "Verify 20% applied to the research foundation (item XVIII)"
+      relative:
+        today: "today"
+        tomorrow: "tomorrow"
+        yesterday: "yesterday"
+        in_days:
+          one: "in 1 day"
+          other: "in %{count} days"
+        days_ago:
+          one: "1 day ago"
+          other: "%{count} days ago"

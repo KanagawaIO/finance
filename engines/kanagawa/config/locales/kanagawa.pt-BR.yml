@@ -1,0 +1,144 @@
+pt-BR:
+  kanagawa:
+    nav:
+      label: "Partidos"
+    home:
+      heading: "Prestação de Contas Anual"
+      intro_html: "Bem-vindo ao módulo <strong>Kanagawa</strong>, ambiente de prestação de contas anual de partidos políticos conforme a <strong>Resolução TSE nº 23.432/14</strong>."
+    dashboard:
+      mock_banner:
+        title: "Dashboard de demonstração"
+        body_html: "Os valores abaixo são <strong>fictícios</strong>, apenas para ilustrar o domínio da Resolução TSE nº 23.432/14 antes da chegada dos modelos reais. Acompanhe a entrega no <a href=\"https://github.com/KanagawaIO/finance/issues?q=label%3Akanagawa\" class=\"underline\">roadmap de issues</a>."
+      header:
+        heading: "Painel do órgão partidário"
+        subtitle: "Visão geral da prestação de contas anual em curso."
+        fiscal_year: "Exercício %{year}"
+        switch_organ: "Trocar órgão"
+      organ:
+        sphere_label: "Esfera"
+        cnpj_label: "CNPJ"
+        uf_label: "UF"
+      spheres:
+        national: "Nacional"
+        state: "Estadual"
+        district: "Distrital"
+        municipal: "Municipal"
+        zonal: "Zonal"
+      annual_report:
+        heading: "Prestação de contas %{year}"
+        status:
+          draft: "Em elaboração"
+          submitted: "Entregue — aguardando julgamento"
+          under_review: "Em exame técnico"
+          approved: "Aprovada"
+          approved_with_caveats: "Aprovada com ressalvas"
+          partially_disapproved: "Desaprovada parcialmente"
+          disapproved: "Desaprovada"
+          not_presented: "Contas não prestadas"
+        pieces_progress: "%{done} de %{total} peças preenchidas"
+        deadline_label: "Prazo legal"
+        deadline_caption: "Entrega até 30/04 do ano seguinte (Res. TSE 23.432/14, item XXIII)"
+        cta: "Continuar prestação de contas"
+        days_remaining:
+          zero: "Vence hoje"
+          one: "1 dia restante"
+          other: "%{count} dias restantes"
+        overdue:
+          one: "Atrasada em 1 dia"
+          other: "Atrasada em %{count} dias"
+      bank_accounts:
+        heading: "Contas bancárias segregadas"
+        caption: "Obrigatoriedade de contas distintas por natureza da receita (Res. TSE 23.432/14, item V)"
+        balance_label: "Saldo"
+        agency_label: "Ag.:"
+        number_label: "Cc.:"
+        kinds:
+          fundo_partidario:
+            title: "Fundo Partidário"
+            caption: "Recursos do Fundo Especial de Assistência Financeira (Lei 9.096/95 art. 38)"
+          doacoes_campanha:
+            title: "Doações para Campanha"
+            caption: "Doações destinadas a campanhas eleitorais (Lei 9.504/97)"
+          outros_recursos:
+            title: "Outros Recursos"
+            caption: "Contribuições, eventos, alienações, rendimentos e sobras de exercícios"
+      fundo_obligations:
+        heading: "Aplicação do Fundo Partidário"
+        caption: "Controle de destinações mínimas e limites máximos conforme a Resolução"
+        total_received: "Recebido no exercício"
+        applied_label: "Aplicado"
+        target_label: "Meta"
+        cap_label: "Limite"
+        min_required: "mínimo de %{pct}%"
+        max_allowed: "máximo de %{pct}%"
+        manual_ref: "Item %{ref}"
+        items:
+          fundacao:
+            title: "Fundação de pesquisa e educação política"
+            caption: "20% mínimo (órgãos nacionais) — item XVIII"
+          mulheres:
+            title: "Programas de participação política das mulheres"
+            caption: "5% mínimo por esfera, com carry-over e penalidade — item XX"
+          pessoal_cap:
+            title: "Despesas com pessoal"
+            caption: "Limite de 50% por esfera — item XIX"
+      pending_actions:
+        heading: "Ações pendentes"
+        caption: "Prazos e regras da Resolução TSE que exigem providência"
+        manual_ref: "Res. TSE 23.432/14 — item %{ref}"
+        view_cta: "Resolver"
+        items:
+          pending_receipts:
+            title: "Emitir recibos de doação"
+            body: "%{count} doações aguardam emissão do recibo partidário (TSE). Prazo máximo de 15 dias a partir do crédito."
+          unidentified_gru:
+            title: "Recolher origem não identificada"
+            body: "%{amount} identificado como origem não identificada. Emitir GRU ao Tesouro Nacional até o último dia útil do mês seguinte ao crédito."
+          forbidden_reversal:
+            title: "Estornar fonte vedada"
+            body: "%{count} doação de fonte vedada detectada. Promover o estorno até o último dia útil do mês seguinte ao crédito."
+          monthly_bookkeeping:
+            title: "Escrituração contábil mensal atrasada"
+            body: "O envio da escrituração digital (SPED) do mês anterior passou do 15º dia útil. Aplica-se em anos eleitorais."
+          annual_report_pieces:
+            title: "Peças da prestação de contas pendentes"
+            body: "Restam %{count} peças do item XXIV a preencher antes da entrega anual."
+      recent_activity:
+        heading: "Movimentação recente"
+        caption: "Últimas operações registradas nos livros do órgão"
+        amount_label: "Valor"
+        kinds:
+          donation_financial: "Doação financeira recebida"
+          donation_estimable: "Doação estimável em dinheiro"
+          expense: "Gasto partidário"
+          fundo_partidario_inflow: "Cota do Fundo Partidário"
+          receipt_issued: "Recibo de doação emitido"
+        direction:
+          in: "Entrada"
+          out: "Saída"
+      upcoming_deadlines:
+        heading: "Próximos prazos"
+        caption: "Obrigações a vencer nos próximos meses"
+        items:
+          annual_report:
+            title: "Entrega da prestação de contas %{year}"
+            caption: "Res. TSE 23.432/14, item XXIII"
+          bank_statements_april:
+            title: "Extratos bancários de abril"
+            caption: "Remessa pelo banco até o dia 30 do mês seguinte (item V.1)"
+          monthly_bookkeeping_election:
+            title: "Escrituração mensal — maio/2026"
+            caption: "Ano eleitoral — envio via SPED até o 15º dia útil (item XXIII)"
+          foundation_allocation_review:
+            title: "Revisão da aplicação mínima da Fundação"
+            caption: "Conferência de 20% aplicados à fundação de pesquisa (item XVIII)"
+      relative:
+        today: "hoje"
+        tomorrow: "amanhã"
+        yesterday: "ontem"
+        in_days:
+          one: "em 1 dia"
+          other: "em %{count} dias"
+        days_ago:
+          one: "há 1 dia"
+          other: "há %{count} dias"

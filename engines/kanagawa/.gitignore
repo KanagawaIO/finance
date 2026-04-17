@@ -1,0 +1,6 @@
+# Source-of-truth manuals kept locally only — LFS uploads are blocked on
+# public forks. The domain rules are distilled into README.md, roadmap.html,
+# and .github/issues-to-create/*, with per-commit citations (Ref. Res. TSE
+# 23.432/14 <item>). Contributors download the PDFs from the TSE/TRE-SC
+# sites when needed.
+manual-*.pdf
