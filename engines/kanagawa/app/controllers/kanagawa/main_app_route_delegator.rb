@@ -10,9 +10,10 @@ module Kanagawa
   # Only the one collision where both sides define the same name needs an
   # explicit shadow — today that's just root_path/root_url.
   #
-  # File lives under app/controllers/kanagawa/concerns/ so Rails collapses
-  # the `concerns/` segment; the module is Kanagawa::MainAppRouteDelegator,
-  # not Kanagawa::Concerns::MainAppRouteDelegator.
+  # File lives directly under app/controllers/kanagawa/ so Zeitwerk maps
+  # it to Kanagawa::MainAppRouteDelegator. (Rails' concerns/ collapse only
+  # applies to the host's top-level app/controllers/concerns directory —
+  # engines don't get that automatically, so we skip the nested folder.)
   module MainAppRouteDelegator
     extend ActiveSupport::Concern
 
